@@ -1,8 +1,12 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 // Creating variables.
+
 // Time to start at 0
 let time = 0;
 // counter running
 let counterRunning = true;
+
+// !
 // Frecuency Counter
 let likedNumbers = {}
 
@@ -14,7 +18,14 @@ let likesList = document.querySelector("ul.likes");
 // Selecting buttons.
 const buttons = document.querySelector("#buttons")
 
+// Select form to figure out when form is submitted.
+const commentForm = document.querySelector("#comment-form");
 
+// Select list to place comments from "submit".
+const comList = document.querySelector("#list");
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// Actions
 
 // When the page loads start timer (Counterrunning = true)
 // set interval that updates +1 each second.
@@ -34,12 +45,27 @@ buttons.addEventListener("click", (event) =>{
         counterText.textContent = time;
     }else if(event.target.id === "pause"){
         toggleSwitch();
-    }
-    else if(event.target.id === "heart"){
+    }else if(event.target.id === "heart"){
+        // !
         likes();
     }
 });
 
+// When the form is submitted (hiting enter and clicking submit) Set content of inside of div.
+commentForm.addEventListener("submit", (event) => {
+    // SUBMIT makes a Network Request each time its submited we need to prevent the re-load to happen. 
+    event.preventDefault();
+    let newP = document.createElement("p");
+    let comment = document.querySelector("#comment-input").value;
+    newP.textContent = comment;
+    comList.appendChild(newP);
+    // reset value to empty string
+    event.target.reset();
+});
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// Functions
 function toggleSwitch(){
     // switching magic occurs here! returning opposite of what is activated...("it is a boolean!")
     counterRunning = !counterRunning;
@@ -59,9 +85,11 @@ function toggleSwitch(){
     });
 };
 
+
+// !!!
 function likes(){
     // 2. Check if a key exists in an object...
-    // 3. if likedNumbers already has a key of the current number(time), 
+    // 3. if likedNumbers already has a key of the current number(time), update li.
     if(likedNumbers[time]){
         // Selecting time from id of already existing current number.
         const newLi2 = document.querySelector(`[id="${time}"]`)
@@ -75,29 +103,9 @@ function likes(){
         const newLi = document.createElement("li");
         // create something to locate the current number 
         newLi.setAttribute('id', time);
+        // update DOM with new created li.
         newLi.textContent = `The number ${time} has been liked 1 time`;
         likesList.appendChild(newLi); 
     }
     
 };
-
-
-// // Hearting button("liking number").
-// heart.addEventListener("click", function(){
-//     const newLi = document.createElement("li");
-//     // creating the current time in a list 
-//     let currentTime = counterText.innerText;
-
-//     if(currentTime){
-//     let number = 
-//     newLi.innerHTML = time + ` has been liked ${number} times`;
-//     likesList.appendChild(newLi); 
-//     }else{
-//     newLi.innerHTML = time + ` has been liked 1 time`;
-//     likesList.appendChild(newLi); 
-//     }
-// });
-
-
-
-
